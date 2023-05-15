@@ -1,13 +1,20 @@
+import { useDispatch } from 'react-redux';
 import { ButtonDel, Note } from './Contact.styled';
 import PropTypes from 'prop-types';
+import { deleteContact } from 'redux/contactsSlice';
 
-export const Contact = ({ contact: { id, name, number }, onDelete }) => {
+export const Contact = ({ contact }) => {
+  const dispatch = useDispatch();
+  // contacts.filter(contacts => contacts.id !== contactId))
+
   return (
     <>
       <Note>
-        {name}: <span> {number}</span>
+        {contact.name}: <span> {contact.number}</span>
       </Note>
-      <ButtonDel onClick={() => onDelete(id)}>Delete</ButtonDel>
+      <ButtonDel onClick={() => dispatch(deleteContact(contact.id))}>
+        Delete
+      </ButtonDel>
     </>
   );
 };
@@ -17,5 +24,5 @@ Contact.ropTypes = {
     name: PropTypes.string.isRequired,
     number: PropTypes.string.isRequired,
   }),
-  onDelete: PropTypes.func.isRequired,
+  deleteContact: PropTypes.func.isRequired,
 };
