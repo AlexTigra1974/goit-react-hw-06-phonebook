@@ -3,26 +3,19 @@ import { ButtonDel, Note } from './Contact.styled';
 import PropTypes from 'prop-types';
 import { deleteContact } from 'redux/contactsSlice';
 
-export const Contact = ({ contact }) => {
-  const dispatch = useDispatch();
-  // contacts.filter(contacts => contacts.id !== contactId))
-
+export const Contact = ({ id, name, number }) => {
+  const dispatch = useDispatch(id);
   return (
     <>
       <Note>
-        {contact.name}: <span> {contact.number}</span>
+        {name}: <span> {number}</span>
       </Note>
-      <ButtonDel onClick={() => dispatch(deleteContact(contact.id))}>
-        Delete
-      </ButtonDel>
+      <ButtonDel onClick={() => dispatch(deleteContact(id))}>Delete</ButtonDel>
     </>
   );
 };
-Contact.ropTypes = {
-  contact: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-  }),
-  deleteContact: PropTypes.func.isRequired,
+Contact.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
 };

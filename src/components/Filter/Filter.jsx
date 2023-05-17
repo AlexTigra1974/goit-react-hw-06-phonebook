@@ -1,23 +1,22 @@
 import { useDispatch } from 'react-redux';
 import { setFilter } from 'redux/filterSlice';
-import PropTypes from 'prop-types';
+// import { getFilter } from 'redux/selectors';
 
-export const Filter = () => {
+export const Filter = e => {
+  // const filter = useSelector(getFilter);
   const dispatch = useDispatch();
-  const handleFilter = e => dispatch(setFilter(e.target.value.trim()));
-
+  // const onFilter = text => {
+  //   setFilter(text);
+  // };
   return (
     <div>
       <p>Find contacts by name</p>
       <input
         type="text"
         name="filter"
-        onInput={handleFilter}
-        placeholder="Search by name..."
+        // value={filter}
+        onInput={e => dispatch(setFilter(e.target.value))}
       ></input>
     </div>
   );
-};
-Filter.propTypes = {
-  handleFilter: PropTypes.func.isRequired,
 };

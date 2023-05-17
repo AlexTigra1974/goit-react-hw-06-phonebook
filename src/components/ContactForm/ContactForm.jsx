@@ -1,19 +1,36 @@
 import { Formik, Field } from 'formik';
-
 import { ContactSchema } from './ContactSchema';
-import { addContact } from 'redux/contactsSlice';
-import { useDispatch } from 'react-redux';
 
-import { Form, FormField, Button, ErrorMessage } from './ContactForm.styled';
-// import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 import { nanoid } from '@reduxjs/toolkit';
 
-export const ContactForm = values => {
+import { Form, FormField, Button, ErrorMessage } from './ContactForm.styled';
+
+export const ContactForm = () => {
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  const newContact = {
-    name: values.name,
-    number: values,
-    id: nanoid(),
+  //  setContacts([...contacts, newContact]);
+  const handleSubmit = ({ name, number }, action) => {
+    const newContact = {
+      name,
+      number,
+      id: nanoid(),
+    };
+
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      alert(`${name} is already in contacts.`);
+    }
+    if (contacts.find(contact => contact.number === number)) {
+      alert(`${number} is already in contacts.`);
+    }
+    dispatch(addContact(newContact));
+    action.resetForm();
   };
 
   return (
@@ -24,10 +41,7 @@ export const ContactForm = values => {
           number: '',
         }}
         validationSchema={ContactSchema}
-        onSubmit={(values, actions) => {
-          dispatch(addContact(newContact));
-          actions.resetForm();
-        }}
+        onSubmit={handleSubmit}
       >
         <Form>
           <FormField>
